@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "db.h"
-#include "logic.h"
+//#include "logic.h"
 #include "ui.h"
 
 int main(void) {
@@ -13,12 +13,12 @@ int main(void) {
     sqlite3* db = db_open("sample.db");
     if (!db) return 1;
 
-    // 3) メインループ
-    while (1) {
-        int choice = show_menu();
-        if (choice == 0) break;
-        handle_choice(db, choice);
-    }
+    //// 3) メインループ
+    //while (1) {
+    //    int choice = show_menu();
+    //    if (choice == 0) break;
+    //    handle_choice(db, choice);
+    //}
 
     // 4) 終了処理
     db_close(db);

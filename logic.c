@@ -1,7 +1,6 @@
 #include "logic.h"
 #include <stdio.h>
 
-
 // 文字列入力時の改行を捨てるユーティリティ
 static void trim_newline(char* s) {
 	size_t n = strlen(s);

@@ -1,12 +1,15 @@
 #ifndef DB_H
 #define DB_H
+
 #include <sqlite3.h>
 
-// DB 初期化: SQL ファイルを読み込んでテーブル作成
-int db_init(const char* sql_file);
+// 初期化（schema.sql→data.sql）
+/// @return SQLITE_OK(0) または sqlite3_open のエラーコード／-1
+int db_init(const char* db_path, const char* data_sql_path);
 
-// DB オープン／クローズ
-sqlite3* db_open(const char* filename);
-void db_close(sqlite3* db);
+// DB オープン
+/// @return 有効な sqlite3* または NULL
+sqlite3* init_db(const char* db_path);
+void     close_db(sqlite3* db);
 
-#endif
+#endif // DB_H

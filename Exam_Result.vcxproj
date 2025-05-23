@@ -136,18 +136,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="db.c" />
-    <ClCompile Include="logic.c" />
+    <ClCompile Include="delete_user.c" />
+    <ClCompile Include="list_users.c" />
+    <ClCompile Include="login_user.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="menu.c" />
-    <ClCompile Include="ui.c" />
+    <ClCompile Include="register_user.c" />
+    <ClCompile Include="update_user.c" />
     <ClCompile Include="user.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="db.h" />
-    <ClInclude Include="logic.h" />
+    <ClInclude Include="delete_user.h" />
+    <ClInclude Include="list_users.h" />
+    <ClInclude Include="login_user.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="platform.h" />
-    <ClInclude Include="ui.h" />
+    <ClInclude Include="register_user.h" />
+    <ClInclude Include="update_user.h" />
     <ClInclude Include="user.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

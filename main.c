@@ -2,7 +2,12 @@
 #include <stdio.h>
 #include <sqlite3.h>
 #include "db.h"
-#include "user.h"
+//#include "user.h"
+#include "register_user.h"
+#include "login_user.h"
+#include "update_user.h"
+#include "delete_user.h"
+#include "list_users.h"
 #include "menu.h"
 
 int main(void) {

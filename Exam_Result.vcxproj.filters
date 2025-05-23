@@ -27,7 +27,10 @@
     <ClCompile Include="ui.c">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="SQLite3\sqlite3.c">
+    <ClCompile Include="user.c">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="menu.c">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,7 +44,13 @@
     <ClInclude Include="ui.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="SQLite3\sqlite3.h">
+    <ClInclude Include="user.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="platform.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

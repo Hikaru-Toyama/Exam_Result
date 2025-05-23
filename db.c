@@ -1,38 +1,76 @@
-#include "db.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <sqlite3.h>
+#include "platform.h"
+#include "db.h"
 
-sqlite3* db_open(const char* filename) {
-	sqlite3* db;
-	if (sqlite3_open(filename, &db) != SQLITE_OK) {
-		fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
-		return NULL;
-	}
-	return db;
+// SQL ファイルを丸ごと読み込み exec するユーティリティ
+static int exec_sql_file(sqlite3* db, const char* path) {
+    FILE* fp = fopen(path, "rb");
+    if (!fp) {
+        fprintf(stderr, "[db_init] SQLファイルを開けません: %s\n", path);
+        return -1;
+    }
+    fseek(fp, 0, SEEK_END);
+    long len = ftell(fp);
+    rewind(fp);
+
+    char* buf = malloc(len + 1);
+    if (!buf || fread(buf, 1, len, fp) != (size_t)len) {
+        fprintf(stderr, "[db_init] Failed to read SQL file: %s\n", path);
+        fclose(fp);
+        free(buf);
+        return -1;
+    }
+    buf[len] = '\0';
+    fclose(fp);
+
+    char* err = NULL;
+    int rc = sqlite3_exec(db, buf, NULL, NULL, &err);
+    free(buf);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "[db_init] %s 実行エラー: %s\n", path, err);
+        sqlite3_free(err);
+        return -1;
+    }
+    return 0;
 }
 
-int db_init(const char* sql_file) {
-	sqlite3* db = db_open("sample.db");
-	if (!db)return 1;
-	FILE* fp = fopen(sql_file, "rb");
-	if (!fp)return 1;
-	fseek(fp, 0, SEEK_END);
-	long len = ftell(fp); rewind(fp);
-	char* buf = malloc(len + 1);
-	fread(buf, 1, len, fp);
-	buf[len] = '\0';
-	fclose(fp);
-	char* err = NULL;
-	int rc = sqlite3_exec(db, buf, NULL, NULL, &err);
-	if (rc != SQLITE_OK) {
-		fprintf(stderr, "SQL error: %s\n", err);
-		sqlite3_free(err);
-	}
-	free(buf);
-	db_close(db);
-	return rc != SQLITE_OK;
+// 初期化：schema.sql → data.sql
+int db_init(const char* db_path, const char* data_sql_path) {
+    sqlite3* db = NULL;
+    int rc = sqlite3_open(db_path, &db);
+    printf("[DEBUG db_init] sqlite3_open(\"%s\") rc=%d, db=%p\n", db_path, rc, (void*)db);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "[db_init] データベースのオープンに失敗しました: %s\n", sqlite3_errmsg(db));
+        if (db) sqlite3_close(db);
+        return rc;
+    }
+
+    if (exec_sql_file(db, "schema.sql") != 0 ||
+        exec_sql_file(db, data_sql_path) != 0) {
+        fprintf(stderr, "[db_init] 初期化スクリプト実行中にエラーが発生しました。\n");
+        sqlite3_close(db);
+        return -1;
+    }
+
+    sqlite3_close(db);
+    return SQLITE_OK;
 }
 
-void db_close(sqlite3* db) {
-	sqlite3_close(db);
+// DB オープン
+sqlite3* init_db(const char* db_path) {
+    sqlite3* db = NULL;
+    int rc = sqlite3_open(db_path, &db);
+    printf("[デバッグ init_db] sqlite3_open(\"%s\") rc=%d, db=%p\n", db_path, rc, (void*)db);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "[init_db] データベースのオープンに失敗しました: %s\n", sqlite3_errmsg(db));
+        if (db) sqlite3_close(db);
+        return NULL;
+    }
+    return db;
+}
+
+void close_db(sqlite3* db) {
+    if (db) sqlite3_close(db);
 }

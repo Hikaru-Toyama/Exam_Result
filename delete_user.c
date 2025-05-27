@@ -7,7 +7,7 @@
 
 // アカウント削除
 int delete_user(sqlite3* db, int user_id) {
-    const char* sql = "DELETE FROM users WHERE id=?;";
+    const char* sql = "DELETE FROM users WHERE user_id=?;";
     sqlite3_stmt* stmt;
     int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {

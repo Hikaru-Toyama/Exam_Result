@@ -8,24 +8,20 @@
 
 // 新規登録
 int register_user(sqlite3* db) {
-    char user[MAX_LEN], pass[MAX_LEN], mail[MAX_LEN];
+    char user[MAX_LEN], pass[MAX_LEN];
     printf("新規ユーザー名: ");
     if (scanf("%127s", user) != 1) {
         fprintf(stderr, "入力エラー: ユーザー名が不正です。\n");
         return -1;
-    }
+    } 
+    
     printf("パスワード: ");
     if (scanf("%127s", pass) != 1) {
         fprintf(stderr, "入力エラー: パスワードが不正です。\n");
         return -1;
     }
-    printf("メールアドレス: ");
-    if (scanf("%127s", mail) != 1) {
-        fprintf(stderr, "入力エラー: メールアドレスが不正です。\n");
-        return -1;
-    }
-
-    const char* sql = "INSERT INTO users(username,password,email) VALUES(?,?,?);";
+   
+    const char* sql = "INSERT INTO users(user_name,password) VALUES(?,?);";
     sqlite3_stmt* stmt;
     int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
@@ -34,7 +30,6 @@ int register_user(sqlite3* db) {
     }
     sqlite3_bind_text(stmt, 1, user, -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 2, pass, -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, mail, -1, SQLITE_STATIC);
 
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE) {

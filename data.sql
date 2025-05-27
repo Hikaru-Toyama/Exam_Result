@@ -1,4 +1,22 @@
--- 初期データ投入（DML）
-INSERT OR IGNORE INTO users (username, password, email) VALUES
-  ('alice', 'password1', 'alice@example.com'),
-  ('bob',   'password2', 'bob@example.com');
+INSERT OR IGNORE INTO subjects(subject_id, subject_name) VALUES
+(1, '国語'), (2, '数学'), (3, '英語'),
+(4, '日本史'), (5, '世界史'), (6, '地理'),
+(7, '物理'), (8, '化学'), (9, '生物');
+INSERT INTO users(user_name, password) VALUES
+('吉中太郎','pass123'),
+('佐藤花子', 'flower456'),
+('鈴木健一', 'kenichi789'),
+('高橋愛', 'ai2025'),
+('清水亮', 'shimizu001');
+INSERT INTO exam_data(user_id, exam_date) VALUES
+(1, '2025-06-01'),
+(2, '2025-06-01'),
+(3, '2025-06-01'),
+(4, '2025-06-01'),
+(5, '2025-06-01');
+INSERT INTO exam_results(user_id, exam_id, subject_id, score) VALUES
+(1, 1, 1, 85), (1, 1, 2, 78), (1, 1, 3, 92), (1, 1, 4, 66), (1, 1, 7, 73),
+(2, 2, 1, 90), (2, 2, 2, 88), (2, 2, 3, 84), (2, 2, 5, 76), (2, 2, 8, 80),
+(3, 3, 1, 70), (3, 3, 2, 75), (3, 3, 3, 68), (3, 3, 6, 80), (3, 3, 9, 77),
+(4, 4, 1, 95), (4, 4, 2, 82), (4, 4, 3, 89), (4, 4, 4, 85), (4, 4, 8, 90),
+(5, 5, 1, 60), (5, 5, 2, 65), (5, 5, 3, 72), (5, 5, 5, 70), (5, 5, 7, 68);

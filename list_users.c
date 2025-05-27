@@ -8,7 +8,9 @@
 
 // 一覧表示
 void list_users(sqlite3* db) {
-    const char* sql = "SELECT id,username,email,created FROM users;";
+
+    //ORDER BY user_id で id順にソート
+    const char* sql = "SELECT user_id,user_name FROM users ORDER BY user_id ASC;";
     sqlite3_stmt* stmt;
     int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
@@ -17,7 +19,7 @@ void list_users(sqlite3* db) {
     }
     printf("=== ユーザー一覧 ===\n");
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
-        printf("ID=%d, ユーザー=%s, メール=%s, 登録日=%s\n",
+        printf("ID=%d, ユーザー=%s\n",
             sqlite3_column_int(stmt, 0),
             sqlite3_column_text(stmt, 1),
             sqlite3_column_text(stmt, 2),

@@ -20,7 +20,7 @@ int login_user(sqlite3* db, int* out_id) {
         return -1;
     }
 
-    const char* sql = "SELECT id FROM users WHERE username=? AND password=?;";
+    const char* sql = "SELECT user_id FROM users WHERE user_name=? AND password=?;";
     sqlite3_stmt* stmt;
     int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
